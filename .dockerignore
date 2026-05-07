@@ -1,0 +1,31 @@
+# Dossier de données — le CSV n'a pas sa place dans l'image
+data/
+
+# Artefacts MLflow — lourd et inutile dans l'image
+mlruns/
+mlflow.db
+
+# Environnements virtuels locaux
+.venv/
+venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Tests — pas nécessaires en production
+tests/
+
+# Notebook — pas nécessaire en production
+notebook/
+
+# Logs générés localement
+*.log
+
+# Git
+.git/
+.gitignore
+
+# Fichiers de config dev
+.pre-commit-config.yaml

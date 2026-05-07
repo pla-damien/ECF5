@@ -1,0 +1,18 @@
+repos:
+  # Ruff : lint et formatage automatique du code Python
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # Mypy : vérification des types Python
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        files: ^churnguard/
+        additional_dependencies:
+          - pandas-stubs
+          - scikit-learn
