@@ -36,57 +36,61 @@ def test_load_data_has_expected_columns(tmp_path):
 
 
 def test_preprocess_returns_features_and_target():
-    df = pd.DataFrame({
-        "customerID": ["1234"],
-        "gender": ["Male"],
-        "SeniorCitizen": [0],
-        "Partner": ["Yes"],
-        "Dependents": ["No"],
-        "tenure": [12],
-        "PhoneService": ["Yes"],
-        "MultipleLines": ["No"],
-        "InternetService": ["Fiber optic"],
-        "OnlineSecurity": ["No"],
-        "OnlineBackup": ["No"],
-        "DeviceProtection": ["No"],
-        "TechSupport": ["No"],
-        "StreamingTV": ["No"],
-        "StreamingMovies": ["No"],
-        "Contract": ["Month-to-month"],
-        "PaperlessBilling": ["Yes"],
-        "PaymentMethod": ["Electronic check"],
-        "MonthlyCharges": [70.0],
-        "TotalCharges": ["840.0"],
-        "Churn": ["No"],
-    })
+    df = pd.DataFrame(
+        {
+            "customerID": ["1234"],
+            "gender": ["Male"],
+            "SeniorCitizen": [0],
+            "Partner": ["Yes"],
+            "Dependents": ["No"],
+            "tenure": [12],
+            "PhoneService": ["Yes"],
+            "MultipleLines": ["No"],
+            "InternetService": ["Fiber optic"],
+            "OnlineSecurity": ["No"],
+            "OnlineBackup": ["No"],
+            "DeviceProtection": ["No"],
+            "TechSupport": ["No"],
+            "StreamingTV": ["No"],
+            "StreamingMovies": ["No"],
+            "Contract": ["Month-to-month"],
+            "PaperlessBilling": ["Yes"],
+            "PaymentMethod": ["Electronic check"],
+            "MonthlyCharges": [70.0],
+            "TotalCharges": ["840.0"],
+            "Churn": ["No"],
+        }
+    )
     X, y = preprocess(df)
     assert isinstance(X, pd.DataFrame)
     assert isinstance(y, pd.Series)
 
 
 def test_preprocess_handles_missing_total_charges():
-    df = pd.DataFrame({
-        "customerID": ["1234", "5678"],
-        "gender": ["Male", "Female"],
-        "SeniorCitizen": [0, 1],
-        "Partner": ["Yes", "No"],
-        "Dependents": ["No", "No"],
-        "tenure": [12, 0],
-        "PhoneService": ["Yes", "Yes"],
-        "MultipleLines": ["No", "No"],
-        "InternetService": ["Fiber optic", "DSL"],
-        "OnlineSecurity": ["No", "No"],
-        "OnlineBackup": ["No", "No"],
-        "DeviceProtection": ["No", "No"],
-        "TechSupport": ["No", "No"],
-        "StreamingTV": ["No", "No"],
-        "StreamingMovies": ["No", "No"],
-        "Contract": ["Month-to-month", "Month-to-month"],
-        "PaperlessBilling": ["Yes", "Yes"],
-        "PaymentMethod": ["Electronic check", "Electronic check"],
-        "MonthlyCharges": [70.0, 20.0],
-        "TotalCharges": ["840.0", " "],
-        "Churn": ["No", "Yes"],
-    })
+    df = pd.DataFrame(
+        {
+            "customerID": ["1234", "5678"],
+            "gender": ["Male", "Female"],
+            "SeniorCitizen": [0, 1],
+            "Partner": ["Yes", "No"],
+            "Dependents": ["No", "No"],
+            "tenure": [12, 0],
+            "PhoneService": ["Yes", "Yes"],
+            "MultipleLines": ["No", "No"],
+            "InternetService": ["Fiber optic", "DSL"],
+            "OnlineSecurity": ["No", "No"],
+            "OnlineBackup": ["No", "No"],
+            "DeviceProtection": ["No", "No"],
+            "TechSupport": ["No", "No"],
+            "StreamingTV": ["No", "No"],
+            "StreamingMovies": ["No", "No"],
+            "Contract": ["Month-to-month", "Month-to-month"],
+            "PaperlessBilling": ["Yes", "Yes"],
+            "PaymentMethod": ["Electronic check", "Electronic check"],
+            "MonthlyCharges": [70.0, 20.0],
+            "TotalCharges": ["840.0", " "],
+            "Churn": ["No", "Yes"],
+        }
+    )
     X, y = preprocess(df)
     assert len(X) == 1

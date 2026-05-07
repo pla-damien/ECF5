@@ -10,27 +10,29 @@ from churnguard.train import train_model
 
 @pytest.fixture
 def sample_data():
-    X = pd.DataFrame({
-        "tenure": [1, 12, 24],
-        "MonthlyCharges": [20.0, 50.0, 80.0],
-        "TotalCharges": [20.0, 600.0, 1920.0],
-        "SeniorCitizen": [0, 0, 1],
-        "gender": ["Male", "Female", "Male"],
-        "Partner": ["No", "Yes", "No"],
-        "Dependents": ["No", "No", "Yes"],
-        "PhoneService": ["Yes", "Yes", "No"],
-        "MultipleLines": ["No", "Yes", "No"],
-        "InternetService": ["DSL", "Fiber optic", "No"],
-        "OnlineSecurity": ["No", "Yes", "No"],
-        "OnlineBackup": ["No", "No", "Yes"],
-        "DeviceProtection": ["No", "Yes", "No"],
-        "TechSupport": ["No", "No", "Yes"],
-        "StreamingTV": ["No", "Yes", "No"],
-        "StreamingMovies": ["No", "No", "Yes"],
-        "Contract": ["Month-to-month", "One year", "Two year"],
-        "PaperlessBilling": ["Yes", "No", "Yes"],
-        "PaymentMethod": ["Electronic check", "Bank transfer", "Credit card"],
-    })
+    X = pd.DataFrame(
+        {
+            "tenure": [1, 12, 24],
+            "MonthlyCharges": [20.0, 50.0, 80.0],
+            "TotalCharges": [20.0, 600.0, 1920.0],
+            "SeniorCitizen": [0, 0, 1],
+            "gender": ["Male", "Female", "Male"],
+            "Partner": ["No", "Yes", "No"],
+            "Dependents": ["No", "No", "Yes"],
+            "PhoneService": ["Yes", "Yes", "No"],
+            "MultipleLines": ["No", "Yes", "No"],
+            "InternetService": ["DSL", "Fiber optic", "No"],
+            "OnlineSecurity": ["No", "Yes", "No"],
+            "OnlineBackup": ["No", "No", "Yes"],
+            "DeviceProtection": ["No", "Yes", "No"],
+            "TechSupport": ["No", "No", "Yes"],
+            "StreamingTV": ["No", "Yes", "No"],
+            "StreamingMovies": ["No", "No", "Yes"],
+            "Contract": ["Month-to-month", "One year", "Two year"],
+            "PaperlessBilling": ["Yes", "No", "Yes"],
+            "PaymentMethod": ["Electronic check", "Bank transfer", "Credit card"],
+        }
+    )
     y = pd.Series([0, 1, 0])
     return X, y
 

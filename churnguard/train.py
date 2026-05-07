@@ -22,10 +22,12 @@ def train_model(
     """Entraîne un pipeline scikit-learn et le retourne."""
     cat_cols = [col for col in X.columns if col not in NUM_COLS]
 
-    preprocessor = ColumnTransformer([
-        ("num", StandardScaler(), NUM_COLS),
-        ("cat", OneHotEncoder(handle_unknown="ignore"), cat_cols),
-    ])
+    preprocessor = ColumnTransformer(
+        [
+            ("num", StandardScaler(), NUM_COLS),
+            ("cat", OneHotEncoder(handle_unknown="ignore"), cat_cols),
+        ]
+    )
 
     if model_name == "lr":
         classifier = LogisticRegression(**params)
@@ -38,10 +40,12 @@ def train_model(
             f"model_name inconnu : {model_name}. Choisir parmi : lr, rf, gb"
         )
 
-    pipeline = Pipeline([
-        ("prep", preprocessor),
-        ("clf", classifier),
-    ])
+    pipeline = Pipeline(
+        [
+            ("prep", preprocessor),
+            ("clf", classifier),
+        ]
+    )
 
     pipeline.fit(X, y)
     return pipeline

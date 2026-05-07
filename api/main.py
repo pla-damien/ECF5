@@ -117,7 +117,4 @@ def predict_batch(customers: list[CustomerIn]) -> list[PredictionOut]:
     df = pd.DataFrame([c.model_dump() for c in customers])
     probas = model_store["model"].predict(df)
 
-    return [
-        PredictionOut(churn=float(p) > 0.5, probability=float(p))
-        for p in probas
-    ]
+    return [PredictionOut(churn=float(p) > 0.5, probability=float(p)) for p in probas]
