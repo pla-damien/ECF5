@@ -17,12 +17,8 @@ def compute_metrics(
     y_test: pd.Series,
 ) -> dict:
     """Calcule accuracy, precision, recall, f1 et roc_auc. Retourne un dict."""
-    # Prédictions de classe (0 ou 1)
     y_pred = model.predict(X_test)
-
-    # Probabilités pour le calcul du roc_auc
     y_proba = model.predict_proba(X_test)[:, 1]
-
     return {
         "accuracy": accuracy_score(y_test, y_pred),
         "precision": precision_score(y_test, y_pred),

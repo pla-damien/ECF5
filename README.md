@@ -1,79 +1,91 @@
-# ChurnGuard — projet de départ
+# ChurnGuard MLOps
 
-> **Mission** : industrialiser ce projet en 2 jours selon le cahier des charges fourni
-> (`Sujet_ChurnGuard_MLOps.docx`). Vous ne touchez pas à la data science.
+[![CI](https://github.com/pla-damien/ECF5/actions/workflows/ci.yml/badge.svg)](https://github.com/pla-damien/ECF5/actions/workflows/ci.yml)
 
-## Contexte
+API de prédiction de churn client pour TelcoFr — modèle Random Forest versionné dans MLflow, servi par FastAPI, containerisé avec Docker.
 
-Vous reprenez le projet d'une data scientist de TelcoFr. Elle a entraîné un
-modèle de prédiction de churn dans un notebook qui marche. Personne d'autre que
-elle ne sait le faire tourner.
+## Architecture
 
-Votre rôle : transformer ce repo en projet MLOps de production.
+```
+┌──────────────────────────────────────────────────────┐
+│                  docker compose up                    │
+│                                                       │
+│  ┌──────────────┐  train+register  ┌──────────────┐  │
+│  │   trainer    │─────────────────►│    MLflow    │  │
+│  │  (one-shot)  │                  │   UI :5000   │  │
+│  └──────────────┘                  └──────┬───────┘  │
+│                                           │ registry  │
+│  ┌──────────────┐◄──────────────────────── │          │
+│  │  API FastAPI │   load model             │          │
+│  │    :8000     │                  ┌───────▼───────┐  │
+│  └──────────────┘                  │ mlflow-data   │  │
+│                                    │ (volume)      │  │
+│                                    └───────────────┘  │
+└──────────────────────────────────────────────────────┘
+```
 
-## Données
-
-**Telco Customer Churn** (IBM Sample Data, ~960 Ko, 7 043 lignes, 21 colonnes,
-licence libre à des fins éducatives).
-
-Le fichier n'est pas commité dans le repo. Pour le télécharger :
+## Quickstart
 
 ```bash
+git clone https://github.com/pla-damien/ECF5.git
+cd ECF5
 python scripts/download_data.py
+docker compose up --build
 ```
 
-Le script télécharge le CSV depuis un mirror stable et vérifie son intégrité par
-SHA-256.
+L'API est disponible sur `http://localhost:8000` après que le trainer ait terminé (~2 min).
 
-Sources :
-- [Kaggle — Telco Customer Churn](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
-- [IBM Sample Data Sets](https://www.ibm.com/community/blogs/datasets/)
+## Endpoints
 
-## Ce qu'il y a dans le repo
-
-```
-.
-├── README.md                       # ce fichier
-├── requirements.txt                # dépendances minimales (pandas, sklearn, jupyter)
-├── notebook/
-│   └── exploration.ipynb           # notebook qui marche, mais qui pue
-├── scripts/
-│   └── download_data.py            # téléchargement + vérification SHA-256
-├── data/
-│   └── .gitkeep                    # le CSV est téléchargé ici
-└── .gitignore
-```
-
-## Démarrage rapide (état initial)
-
+### Santé
 ```bash
-# 1. installer les dépendances
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-
-# 2. télécharger les données
-python scripts/download_data.py
-
-# 3. ouvrir le notebook
-jupyter notebook notebook/exploration.ipynb
+curl http://localhost:8000/health
+```
+```json
+{"status": "ok", "model": "churnguard", "version": "1"}
 ```
 
-À ce stade le notebook s'exécute de bout en bout et produit un fichier
-`models/best_model.pkl`. C'est tout. Pas de tests, pas de Docker, pas d'API,
-pas de CI.
+### Prédiction simple
+```bash
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "gender": "Male", "SeniorCitizen": 0, "Partner": "Yes",
+    "Dependents": "No", "tenure": 12, "PhoneService": "Yes",
+    "MultipleLines": "No", "InternetService": "Fiber optic",
+    "OnlineSecurity": "No", "OnlineBackup": "No",
+    "DeviceProtection": "No", "TechSupport": "No",
+    "StreamingTV": "No", "StreamingMovies": "No",
+    "Contract": "Month-to-month", "PaperlessBilling": "Yes",
+    "PaymentMethod": "Electronic check",
+    "MonthlyCharges": 70.0, "TotalCharges": 840.0
+  }'
+```
+```json
+{"churn": true, "probability": 0.73}
+```
 
-## Ce que vous devez faire
+### Prédiction batch (max 100 clients)
+```bash
+curl -X POST http://localhost:8000/predict/batch \
+  -H "Content-Type: application/json" \
+  -d '[{...}, {...}]'
+```
 
-Lire le sujet (`Sujet_ChurnGuard_MLOps.docx`), puis livrer :
+## Documentation interactive
 
-- un package Python `churnguard/` modulaire avec tests pytest,
-- un setup MLflow (tracking + registry) avec un modèle promu en `Production`,
-- une API FastAPI qui charge le modèle depuis le registry,
-- un Dockerfile multi-stage et un docker-compose qui démarre toute la stack,
-- un workflow GitHub Actions complet (lint, typecheck, tests, build, scan).
+`http://localhost:8000/docs` — Swagger UI généré automatiquement par FastAPI.
 
+## MLflow UI
+
+`http://localhost:5000` — suivi des expériences, métriques, modèles enregistrés.
+
+## Image Docker
+
+```
+ghcr.io/pla-damien/ecf5:latest
+```
 
 ## Licence
 
-Code : MIT.
-Données : IBM Sample Data, voir conditions sur le site IBM.
+MIT
