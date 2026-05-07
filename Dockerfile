@@ -37,7 +37,7 @@ WORKDIR /app
 
 # On crée un utilisateur non-root "appuser" pour des raisons de sécurité
 # Par défaut Docker tourne en root — c'est une mauvaise pratique en production
-RUN useradd --create-home appuser
+RUN useradd --create-home appuser && mkdir -p /app/data && chown appuser:appuser /app/data
 
 # On copie le venv complet depuis le stage builder
 # --from=builder indique qu'on prend le fichier du stage précédent (pas du disque local)
