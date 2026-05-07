@@ -79,7 +79,7 @@ jobs:
         run: docker build -t churnguard:ci .
 
       - name: Scan de sécurité Trivy
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: churnguard:ci
           format: table

@@ -1,5 +1,7 @@
 """Fonctions d'entraînement du modèle."""
 
+from typing import Any
+
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
@@ -15,7 +17,7 @@ def train_model(
     X: pd.DataFrame,
     y: pd.Series,
     model_name: str,
-    params: dict,
+    params: dict[str, Any],
 ) -> Pipeline:
     """Entraîne un pipeline scikit-learn et le retourne."""
     cat_cols = [col for col in X.columns if col not in NUM_COLS]

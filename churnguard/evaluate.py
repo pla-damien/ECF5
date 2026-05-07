@@ -15,7 +15,7 @@ def compute_metrics(
     model: Pipeline,
     X_test: pd.DataFrame,
     y_test: pd.Series,
-) -> dict:
+) -> dict[str, float]:
     """Calcule accuracy, precision, recall, f1 et roc_auc. Retourne un dict."""
     y_pred = model.predict(X_test)
     y_proba = model.predict_proba(X_test)[:, 1]
