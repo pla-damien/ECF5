@@ -1,6 +1,7 @@
 """Tests pour le module churnguard.data."""
 
 import pandas as pd
+
 from churnguard.data import load_data, preprocess
 
 

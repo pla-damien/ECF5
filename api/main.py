@@ -58,7 +58,9 @@ async def lifespan(app: FastAPI):
         versions = client.get_latest_versions("churnguard", stages=["Production"])
         model_store["version"] = versions[0].version if versions else "unknown"
 
-        print(f"Modèle churnguard v{model_store['version']} chargé depuis {tracking_uri}")
+        print(
+            f"Modèle churnguard v{model_store['version']} chargé depuis {tracking_uri}"
+        )
 
     except Exception as e:
         print(f"Impossible de charger le modèle : {e}")

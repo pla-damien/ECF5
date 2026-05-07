@@ -34,7 +34,9 @@ def train_model(
     elif model_name == "gb":
         classifier = GradientBoostingClassifier(**params)
     else:
-        raise ValueError(f"model_name inconnu : {model_name}. Choisir parmi : lr, rf, gb")
+        raise ValueError(
+            f"model_name inconnu : {model_name}. Choisir parmi : lr, rf, gb"
+        )
 
     pipeline = Pipeline([
         ("prep", preprocessor),
@@ -58,7 +60,9 @@ if __name__ == "__main__":
 
     df = load_data("data/telco_churn.csv")
     X, y = preprocess(df)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
 
     mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000"))
     mlflow.set_experiment("churnguard")
