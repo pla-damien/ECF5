@@ -28,12 +28,12 @@ services:
       - bash
       - -c
       - |
+        python scripts/download_data.py
         python -m churnguard.train
         python scripts/register_model.py
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
     volumes:
-      - ./data:/app/data
       - ./scripts:/app/scripts
     depends_on:
       mlflow:

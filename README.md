@@ -29,7 +29,6 @@ API de prédiction de churn client pour TelcoFr — modèle Random Forest versio
 ```bash
 git clone https://github.com/pla-damien/ECF5.git
 cd ECF5
-python scripts/download_data.py
 docker compose up --build
 ```
 
